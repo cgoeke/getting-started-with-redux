@@ -1,15 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-const AddTodo = ({ onAddClick }) => {
+let nextTodoId = 0; // Used to generate unique ID
+let AddTodo = ({ dispatch }) => {
   let input;
-  
   return (
     <div>
       <input ref={node => {
         input = node;
       }}/>
       <button onClick={() => {
-        onAddClick(input.value);
+        dispatch({
+          type: 'ADD_TODO',
+          id: nextTodoId++,
+          text: input.value
+        })
         input.value = '';
       }}>
         Add Todo
@@ -17,5 +22,7 @@ const AddTodo = ({ onAddClick }) => {
     </div>
   );
 };
+
+AddTodo = connect()(AddTodo);
 
 export default AddTodo;

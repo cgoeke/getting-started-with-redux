@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { 
   combineReducers,
   createStore 
 } from 'redux';
-import TodoList from './components/TodoList';
+import { Provider } from 'react-redux';
+import VisibleTodoList from './components/VisibleTodoList';
 import AddTodo from './components/AddTodo';
 import Footer from './components/Footer';
 
@@ -104,65 +105,17 @@ const todoApp = combineReducers({
 // Initiates Redux store passing in the root reducer
 const store = createStore(todoApp);
 
-const getVisibleTodos = (todos, filter) => {
-  switch (filter) {
-    case 'SHOW_ALL':
-      return todos;
-    case 'SHOW_ACTIVE':
-      return todos.filter(todo => !todo.completed)
-    case 'SHOW_COMPLETED':
-      return todos.filter(todo => todo.completed)
-  }
-}
-
-let nextTodoId = 0; 
-const TodoApp = ({ todos, visibilityFilter }) => (
+const TodoApp = () => (
   <div>
-    <AddTodo 
-      onAddClick={(text) =>
-        store.dispatch({
-          type: 'ADD_TODO',
-          id: nextTodoId++,
-          text
-        })
-      }
-    />
-    <TodoList 
-      todos={
-        getVisibleTodos(
-          todos, 
-          visibilityFilter
-        )
-      }
-      onTodoClick={(id) =>
-        store.dispatch({
-          type: 'TOGGLE_TODO',
-          id
-        })
-      }  
-    />
-    <Footer 
-      visibilityFilter={visibilityFilter}
-      onFilterClick={(filter) => {
-        store.dispatch({
-          type: 'SET_VISIBILITY_FILTER',
-          filter
-        })
-      }}
-    />
+    <AddTodo />
+    <VisibleTodoList />
+    <Footer />
   </div>
 );
 
-// Renders Counter component to DOM passing in state and props
-const render = () => {
-  ReactDOM.render(
-    <TodoApp
-      {...store.getState()}
-    />,
-    document.getElementById('root')
-  );
-}
-
-// Re-renders on store state change
-store.subscribe(render);
-render();
+ReactDOM.render(
+  <Provider store={store}>
+    <TodoApp/>
+  </Provider>,
+  document.getElementById('root')
+);
