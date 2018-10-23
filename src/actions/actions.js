@@ -1,8 +1,8 @@
+import { v4 } from 'uuid';
 
-let nextTodoId = 0; // Used to generate unique ID
 export const addTodo = (text) => ({
   type: 'ADD_TODO',
-  id: nextTodoId++,
+  id: v4(),
   text
 });
 

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import { loadState, saveState } from './localStorage';
 import { todoApp } from './reducers/reducers';
 import VisibleTodoList from './components/VisibleTodoList';
 import AddTodo from './components/AddTodo';
@@ -31,8 +32,16 @@ import Footer from './components/Footer';
 //   return { getState, dispatch, subscribe };
 // }
 
+// Checks local storage for persisted state
+const persistedState = loadState();
 // Initiates Redux store passing in the root reducer
-const store = createStore(todoApp);
+const store = createStore(todoApp, persistedState);
+// Saves current app state to local storage
+store.subscribe(() => {
+  saveState({
+    todos: store.getState().todos
+  });
+});
 
 const TodoApp = () => (
   <div>
