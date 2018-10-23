@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { addTodo } from '../actions/actions';
 
-let nextTodoId = 0; // Used to generate unique ID
+
 let AddTodo = ({ dispatch }) => {
   let input;
   return (
@@ -10,11 +11,7 @@ let AddTodo = ({ dispatch }) => {
         input = node;
       }}/>
       <button onClick={() => {
-        dispatch({
-          type: 'ADD_TODO',
-          id: nextTodoId++,
-          text: input.value
-        })
+        dispatch(addTodo(input.value));
         input.value = '';
       }}>
         Add Todo
