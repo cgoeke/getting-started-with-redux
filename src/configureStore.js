@@ -1,7 +1,25 @@
 import { createStore } from 'redux';
 import { loadState, saveState } from './localStorage';
-import { todoApp } from './reducers/reducers';
-// Implements Redux createStore from scratch
+import { todoApp } from './reducers';
+
+const configureStore = () => {
+  // Checks local storage for persisted state
+  const persistedState = loadState();
+  // Initiates Redux store passing in the root reducer
+  const store = createStore(todoApp, persistedState);
+  // Saves current app state to local storage
+  store.subscribe(() => {
+    saveState({
+      todos: store.getState().todos
+    });
+  });
+
+  return store;
+};
+
+export default configureStore;
+
+// Implements Redux createStore from scratch (for learning purposes)
 // const createStore = (reducer) => {
 //   let state;
 //   let listeners = [];
@@ -24,19 +42,3 @@ import { todoApp } from './reducers/reducers';
 
 //   return { getState, dispatch, subscribe };
 // }
-const configureStore = () => {
-  // Checks local storage for persisted state
-  const persistedState = loadState();
-  // Initiates Redux store passing in the root reducer
-  const store = createStore(todoApp, persistedState);
-  // Saves current app state to local storage
-  store.subscribe(() => {
-    saveState({
-      todos: store.getState().todos
-    });
-  });
-
-  return store;
-};
-
-export default configureStore;

@@ -1,20 +1,3 @@
-import { combineReducers } from 'redux';
-// Implements Redux combineReducers from scratch
-// const combineReducers = (reducers) => {
-//   return (state = {}, action) => {
-//     return Object.keys(reducers).reduce(
-//       (nextState, key) => {
-//         nextState[key] = reducers[key](
-//           state[key],
-//           action
-//         );
-//         return nextState;
-//       },
-//       {} // Initiates nextState as an empty object
-//     );
-//   };
-// };
-
 // Reducer funtions
 const todo = (state, action) => {
   switch (action.type) {
@@ -52,5 +35,17 @@ const todos = (state = [], action) => {
   }
 };
 
-// Combines multiple reducers into a root reducer
-export const todoApp = combineReducers({ todos });
+export default todos;
+
+export const getVisibleTodos = (state, filter) => {
+  switch (filter) {
+    case 'all':
+      return state;
+    case 'active':
+      return state.filter(item => !item.completed);
+    case 'completed':
+      return state.filter(item => item.completed);
+    default:
+      throw new Error(`Unknown filter: ${filter}.`);
+  }
+}
