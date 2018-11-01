@@ -24,6 +24,10 @@ export const getIsFetching = (state, filter) => {
   return fromList.getIsFetching(state.listByFilter[filter]);
 };
 
+export const getErrorMessage = (state, filter) => {
+  return fromList.getErrorMessage(state.listByFilter[filter]);
+}
+
 // Implements Redux combineReducers from scratch (for learning purposes)
 // const combineReducers = (reducers) => {
 //   return (state = {}, action) => {
