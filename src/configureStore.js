@@ -1,18 +1,9 @@
 import { createStore } from 'redux';
-import { loadState, saveState } from './localStorage';
 import { todoApp } from './reducers';
 
 const configureStore = () => {
-  // Checks local storage for persisted state
-  const persistedState = loadState();
   // Initiates Redux store passing in the root reducer
-  const store = createStore(todoApp, persistedState);
-  // Saves current app state to local storage
-  store.subscribe(() => {
-    saveState({
-      todos: store.getState().todos
-    });
-  });
+  const store = createStore(todoApp);
 
   return store;
 };
