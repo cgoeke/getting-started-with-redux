@@ -1,11 +1,20 @@
-import { createStore } from 'redux';
-import { todoApp } from './reducers';
+import { createStore, applyMiddleware } from 'redux';
+import todos from './reducers';
+
+// Allows async function support for actions
+const promise = (store) => (next) => (action) => {
+  if (typeof action.then === 'function') {
+    return action.then(next);
+  }
+  return next(action);
+};
 
 const configureStore = () => {
-  // Initiates Redux store passing in the root reducer
-  const store = createStore(todoApp);
-
-  return store;
+  // Initiates Redux store passing in the root reducer and any middleware
+  return createStore(
+    todos,
+    applyMiddleware(promise)
+  );
 };
 
 export default configureStore;
