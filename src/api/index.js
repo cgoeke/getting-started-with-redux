@@ -37,3 +37,23 @@ export const fetchTodos = (filter) => (
     }
   })
 );
+
+export const addTodo = (text) => (
+  delay(500).then(() => {
+    const todo = {
+      id: v4(),
+      text,
+      completed: false
+    };
+    fakeDatabase.todos.push(todo);
+    return todo;
+  })
+);
+
+export const toggleTodo = (id) => (
+  delay(500).then(() => {
+    const todo = fakeDatabase.todos.find(item => item.id === id);
+    todo.completed = !todo.completed;
+    return todo;
+  })
+);
